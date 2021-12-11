@@ -1,6 +1,6 @@
 # nerf
 
-Gleam bindings to the Erlang [gun][gun] HTTP/1.1, HTTP/2 and Websocket client.
+Gleam bindings to [gun][gun], the Erlang HTTP/1.1, HTTP/2 and Websocket client.
 
 [gun]: https://hex.pm/packages/gun
 

@@ -1,7 +1,7 @@
 name = "nerf"
 version = "0.1.0"
 licences = ["Apache-2.0"]
-description = "Gleam bindings to the gun HTTP/1.1, HTTP/2 and Websocket client"
+description = "Gleam bindings to gun, the HTTP/1.1, HTTP/2 and Websocket client"
 repository = { type = "github", user = "lpil", repo = "nerf" }
 links = [{ title = "Website", href = "https://gleam.run" }]
 
