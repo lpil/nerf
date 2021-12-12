@@ -23,10 +23,6 @@ import gleam/erlang
 import gleam/erlang/atom
 
 pub fn main() {
-  // Start the implicit Erlang applications required
-  let app = atom.create_from_string("your_project_name")
-  assert Ok(_) = erlang.ensure_all_started(app)
-
   // Connect
   assert Ok(conn) = websocket.connect("example.com", "/ws", 8080, [])
 

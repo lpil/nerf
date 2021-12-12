@@ -6,7 +6,6 @@ import gleeunit/should
 import nerf/websocket.{Text}
 
 pub fn main() {
-  assert Ok(_) = erlang.ensure_all_started(atom.create_from_string("nerf"))
   gleeunit.main()
 }
 
