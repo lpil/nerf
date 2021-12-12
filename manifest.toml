@@ -2,6 +2,7 @@
 # You typically do not need to edit this file
 
 packages = [
+  { name = "certifi", version = "2.8.0", build_tools = ["rebar3"], requirements = [], otp_app = "certifi", source = "hex", outer_checksum = "6AC7EFC1C6F8600B08D625292D4BBF584E14847CE1B6B5C44D983D273E1097EA" },
   { name = "cowlib", version = "2.7.3", build_tools = ["rebar3"], requirements = [], otp_app = "cowlib", source = "hex", outer_checksum = "1E1A3D176D52DAEBBECBBCDFD27C27726076567905C2A9D7398C54DA9D225761" },
   { name = "gleam_erlang", version = "0.5.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_erlang", source = "hex", outer_checksum = "6DC8D506127BF332A48DBE1A286ACAAA0F2C7BF84B33BD9E6F3A8002EC9F649C" },
   { name = "gleam_http", version = "2.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_http", source = "hex", outer_checksum = "C2DF02A2BD551B590D92ADA90A67CDEE60EB4BAD48B5EE10A9AB4CE180CBCE36" },
@@ -11,6 +12,7 @@ packages = [
 ]
 
 [requirements]
+certifi = "~> 2.8"
 gleam_erlang = "~> 0.5"
 gleam_http = "~> 2.1"
 gleam_stdlib = "~> 0.18"
