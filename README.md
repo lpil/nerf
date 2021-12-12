@@ -4,7 +4,7 @@ Gleam bindings to [gun][gun], the Erlang HTTP/1.1, HTTP/2 and Websocket client.
 
 [gun]: https://hex.pm/packages/gun
 
-Currently this library is rather basic and only supports a portion of the
+Currently this library is very basic and only supports a portion of the
 websocket API, and TLS is not verified!
 
 ## Usage
