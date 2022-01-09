@@ -1,6 +1,8 @@
 -module(nerf_ffi).
 
--export([ws_receive/2, ws_await_upgrade/2]).
+-export([ws_receive/2, ws_await_upgrade/2, ws_open/3]).
+
+ws_open(Host, Port, Protocols) -> gun:open(Host, Port, #{protocols => Protocols}).
 
 ws_receive({connection, Ref, Pid}, Timeout)
     when is_reference(Ref) andalso is_pid(Pid) ->
