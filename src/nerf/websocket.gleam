@@ -1,7 +1,6 @@
 import gleam/uri.{Uri}
 import gleam/http.{Header}
 import gleam/dynamic.{Dynamic}
-import gleam/erlang/atom.{Atom}
 import gleam/result
 import nerf/gun.{ConnectionPid, StreamReference}
 
@@ -23,34 +22,6 @@ pub fn connect(
 ) -> Result(Connection, ConnectError) {
   try pid =
     gun.open(hostname, port)
-    |> result.map_error(ConnectionFailed)
-  try _ =
-    gun.await_up(pid)
-    |> result.map_error(ConnectionFailed)
-
-  // Upgrade to websockets
-  let ref = gun.ws_upgrade(pid, path, headers)
-  let conn = Connection(pid: pid, ref: ref)
-  try _ =
-    await_upgrade(conn, 1000)
-    |> result.map_error(ConnectionFailed)
-
-  // TODO: handle upgrade failure
-  // https://ninenines.eu/docs/en/gun/2.0/guide/websocket/
-  // https://ninenines.eu/docs/en/gun/1.2/manual/gun_error/
-  // https://ninenines.eu/docs/en/gun/1.2/manual/gun_response/
-  Ok(conn)
-}
-
-pub fn connect_with_protocols(
-  hostname: String,
-  path: String,
-  protocols: List(Atom),
-  on port: Int,
-  with headers: List(Header),
-) -> Result(Connection, ConnectError) {
-  try pid =
-    gun.open_with_protocols(hostname, port, protocols)
     |> result.map_error(ConnectionFailed)
   try _ =
     gun.await_up(pid)

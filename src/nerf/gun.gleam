@@ -3,31 +3,15 @@
 
 import gleam/http.{Header}
 import gleam/erlang/charlist.{Charlist}
-import gleam/erlang/atom.{Atom}
 import gleam/dynamic.{Dynamic}
 
 pub external type StreamReference
 
 pub external type ConnectionPid
 
-pub fn open_with_protocols(
-  host: String,
-  port: Int,
-  protocols: List(Atom),
-) -> Result(ConnectionPid, Dynamic) {
-  open_erl_with_protocols(charlist.from_string(host), port, protocols)
-}
-
 pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
   open_erl(charlist.from_string(host), port)
 }
-
-pub external fn open_erl_with_protocols(
-  Charlist,
-  Int,
-  List(Atom),
-) -> Result(ConnectionPid, Dynamic) =
-  "nerf_ffi" "ws_open"
 
 pub external fn open_erl(Charlist, Int) -> Result(ConnectionPid, Dynamic) =
   "nerf_ffi" "ws_open"
