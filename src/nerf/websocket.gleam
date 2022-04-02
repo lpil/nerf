@@ -1,4 +1,3 @@
-import gleam/uri.{Uri}
 import gleam/http.{Header}
 import gleam/dynamic.{Dynamic}
 import gleam/result
