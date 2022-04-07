@@ -9,11 +9,28 @@ pub external type StreamReference
 
 pub external type ConnectionPid
 
-pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
-  open_erl(charlist.from_string(host), port)
+pub type Protocols {
+  Http
+  Http2
 }
 
-pub external fn open_erl(Charlist, Int) -> Result(ConnectionPid, Dynamic) =
+pub type Opts {
+  Opts(protocols: List(Protocols))
+}
+
+pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
+  open_erl(charlist.from_string(host), port, Opts(protocols: [Http]))
+}
+
+pub fn open_with_opts(
+  host: String,
+  port: Int,
+  opts: Opts,
+) -> Result(ConnectionPid, Dynamic) {
+  open_erl(charlist.from_string(host), port, opts)
+}
+
+pub external fn open_erl(Charlist, Int, Opts) -> Result(ConnectionPid, Dynamic) =
   "nerf_ffi" "ws_open"
 
 pub external fn await_up(ConnectionPid) -> Result(Dynamic, Dynamic) =
