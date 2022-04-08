@@ -14,18 +14,18 @@ pub type Protocols {
   Http2
 }
 
-pub type Opts {
-  Opts(protocols: List(Protocols))
+pub type Options {
+  Options(protocols: List(Protocols))
 }
 
 pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
-  open_erl(charlist.from_string(host), port, Opts(protocols: [Http]))
+  open_erl(charlist.from_string(host), port, Options(protocols: [Http]))
 }
 
-pub fn open_with_opts(
+pub fn open_with_options(
   host: String,
   port: Int,
-  opts: Opts,
+  opts: Options,
 ) -> Result(ConnectionPid, Dynamic) {
   open_erl(charlist.from_string(host), port, opts)
 }
