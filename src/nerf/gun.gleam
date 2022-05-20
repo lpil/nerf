@@ -44,10 +44,12 @@ pub type Options {
   )
 }
 
+/// Run [gun:open()](https://ninenines.eu/docs/en/gun/1.3/manual/gun.open) using the default options
 pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
   open_erl(charlist.from_string(host), port)
 }
 
+/// Run [gun:open()](https://ninenines.eu/docs/en/gun/1.3/manual/gun.open) with the ability to pass custom options
 pub fn open_with_options(
   host: String,
   port: Int,
