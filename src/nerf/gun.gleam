@@ -30,7 +30,11 @@ pub fn open_with_options(
   open_erl(charlist.from_string(host), port, opts)
 }
 
-pub external fn open_erl(Charlist, Int, Options) -> Result(ConnectionPid, Dynamic) =
+pub external fn open_erl(
+  Charlist,
+  Int,
+  Options,
+) -> Result(ConnectionPid, Dynamic) =
   "nerf_ffi" "ws_open"
 
 pub external fn await_up(ConnectionPid) -> Result(Dynamic, Dynamic) =
