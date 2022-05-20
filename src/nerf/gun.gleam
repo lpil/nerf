@@ -19,7 +19,7 @@ pub type Options {
 }
 
 pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
-  open_erl(charlist.from_string(host), port, Options(protocols: [Http]))
+  open_erl(charlist.from_string(host), port)
 }
 
 pub fn open_with_options(
@@ -27,10 +27,13 @@ pub fn open_with_options(
   port: Int,
   opts: Options,
 ) -> Result(ConnectionPid, Dynamic) {
-  open_erl(charlist.from_string(host), port, opts)
+  open_erl_with_options(charlist.from_string(host), port, opts)
 }
 
-pub external fn open_erl(
+pub external fn open_erl(Charlist, Int) -> Result(ConnectionPid, Dynamic) =
+  "nerf_ffi" "ws_open"
+
+pub external fn open_erl_with_options(
   Charlist,
   Int,
   Options,
