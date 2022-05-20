@@ -4,6 +4,7 @@
 import gleam/http.{Header}
 import gleam/erlang/charlist.{Charlist}
 import gleam/dynamic.{Dynamic}
+import gleam/option.{Option}
 
 pub external type StreamReference
 
@@ -14,8 +15,21 @@ pub type Protocols {
   Http2
 }
 
+pub type Transports {
+  Tls
+  Tcp
+}
+
+// Missing: http_opts, http2_opts, transport_opts, ws_opts
 pub type Options {
-  Options(protocols: List(Protocols))
+  Options(
+    connect_timeout: Option(Int),
+    protocols: Option(List(Protocols)),
+    transport: Option(Transports),
+    retry: Option(Int),
+    retry_timeout: Option(Int),
+    trace: Option(Bool),
+  )
 }
 
 pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
