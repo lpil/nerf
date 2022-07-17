@@ -1,6 +1,9 @@
 import gleam/http.{Header}
 import gleam/dynamic.{Dynamic}
 import gleam/result
+import gleam/string_builder.{StringBuilder}
+import gleam/bit_builder.{BitBuilder}
+import gleam/result
 import nerf/gun.{ConnectionPid, StreamReference}
 
 pub opaque type Connection {
@@ -42,6 +45,18 @@ pub fn connect(
 
 pub fn send(to conn: Connection, this message: String) -> Nil {
   gun.ws_send(conn.pid, gun.Text(message))
+}
+
+pub fn send_builder(to conn: Connection, this message: StringBuilder) -> Nil {
+  gun.ws_send(conn.pid, gun.TextBuilder(message))
+}
+
+pub fn send_binary(to conn: Connection, this message: BitString) -> Nil {
+  gun.ws_send(conn.pid, gun.Binary(message))
+}
+
+pub fn send_binary_builder(to conn: Connection, this message: BitBuilder) -> Nil {
+  gun.ws_send(conn.pid, gun.BinaryBuilder(message))
 }
 
 pub external fn receive(from: Connection, within: Int) -> Result(Frame, Nil) =
