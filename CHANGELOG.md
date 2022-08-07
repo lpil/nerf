@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## v0.3.0 - 2022-08-07
 
 - Added support for binary WebSocket frames
 
