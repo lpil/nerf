@@ -1,10 +1,9 @@
 import gleam/http.{Header}
 import gleam/dynamic.{Dynamic}
 import gleam/result
+import nerf/gun.{ConnectionPid, Options, StreamReference}
 import gleam/string_builder.{StringBuilder}
 import gleam/bit_builder.{BitBuilder}
-import gleam/result
-import nerf/gun.{ConnectionPid, StreamReference}
 
 pub opaque type Connection {
   Connection(ref: StreamReference, pid: ConnectionPid)
@@ -22,8 +21,18 @@ pub fn connect(
   on port: Int,
   with headers: List(Header),
 ) -> Result(Connection, ConnectError) {
+  connect_with_options(hostname, path, on: port, with: headers, opts: Options())
+}
+
+pub fn connect_with_options(
+  hostname: String,
+  path: String,
+  on port: Int,
+  with headers: List(Header),
+  opts options: Options,
+) -> Result(Connection, ConnectError) {
   try pid =
-    gun.open(hostname, port)
+    gun.open_with_options(hostname, port, options)
     |> result.map_error(ConnectionFailed)
   try _ =
     gun.await_up(pid)
