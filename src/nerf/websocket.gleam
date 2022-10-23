@@ -21,28 +21,9 @@ pub fn connect(
   on port: Int,
   with headers: List(Header),
 ) -> Result(Connection, ConnectError) {
-  try pid =
-    gun.open(hostname, port)
-    |> result.map_error(ConnectionFailed)
-  try _ =
-    gun.await_up(pid)
-    |> result.map_error(ConnectionFailed)
-
-  // Upgrade to websockets
-  let ref = gun.ws_upgrade(pid, path, headers)
-  let conn = Connection(pid: pid, ref: ref)
-  try _ =
-    await_upgrade(conn, 1000)
-    |> result.map_error(ConnectionFailed)
-
-  // TODO: handle upgrade failure
-  // https://ninenines.eu/docs/en/gun/2.0/guide/websocket/
-  // https://ninenines.eu/docs/en/gun/1.2/manual/gun_error/
-  // https://ninenines.eu/docs/en/gun/1.2/manual/gun_response/
-  Ok(conn)
+  connect_with_options(hostname, path, on: port, with: headers, opts: Options())
 }
 
-// TODO try not repeat code from `connect()`
 pub fn connect_with_options(
   hostname: String,
   path: String,
