@@ -1,9 +1,8 @@
-import gleam/erlang
-import gleam/erlang/atom
 import gleam/string
+import gleam/string_builder
+import gleam/bit_builder
 import gleeunit
-import gleeunit/should
-import nerf/websocket.{Text}
+import nerf/websocket.{Binary, Text}
 
 pub fn main() {
   gleeunit.main()
@@ -22,6 +21,27 @@ pub fn echo_test() {
   websocket.send(conn, "World")
   assert Ok(Text("Hello")) = websocket.receive(conn, 500)
   assert Ok(Text("World")) = websocket.receive(conn, 500)
+
+  websocket.send_builder(conn, string_builder.from_string("Goodbye"))
+  websocket.send_builder(conn, string_builder.from_string("Universe"))
+  assert Ok(Text("Goodbye")) = websocket.receive(conn, 500)
+  assert Ok(Text("Universe")) = websocket.receive(conn, 500)
+
+  websocket.send_binary(conn, <<1, 2, 3, 4>>)
+  websocket.send_binary(conn, <<5, 6, 7, 8>>)
+  assert Ok(Binary(<<1, 2, 3, 4>>)) = websocket.receive(conn, 500)
+  assert Ok(Binary(<<5, 6, 7, 8>>)) = websocket.receive(conn, 500)
+
+  websocket.send_binary_builder(
+    conn,
+    bit_builder.from_bit_string(<<8, 7, 6, 5>>),
+  )
+  websocket.send_binary_builder(
+    conn,
+    bit_builder.from_bit_string(<<4, 3, 2, 1>>),
+  )
+  assert Ok(Binary(<<8, 7, 6, 5>>)) = websocket.receive(conn, 500)
+  assert Ok(Binary(<<4, 3, 2, 1>>)) = websocket.receive(conn, 500)
 
   // Close the connection
   websocket.close(conn)

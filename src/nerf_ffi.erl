@@ -1,6 +1,6 @@
 -module(nerf_ffi).
 
--export([ws_receive/2, ws_await_upgrade/2, ws_open/2, ws_open/3]).
+-export([ws_receive/2, ws_await_upgrade/2, ws_send_erl/2, ws_open/2, ws_open/3]).
 
 ws_open(Host, Port, Opts) -> gun:open(Host, Port, Opts).
 ws_open(Host, Port) -> gun:open(Host, Port).
@@ -36,3 +36,11 @@ ws_await_upgrade({connection, Ref, Pid}, Timeout)
         % TODO: return an error
         exit(timeout)
     end.
+
+ws_send_erl(Pid, {text_builder, Text}) ->
+    ws_send_erl(Pid, {text, Text});
+ws_send_erl(Pid, {binary_builder, Bin}) ->
+    ws_send_erl(Pid, {binary, Bin});
+ws_send_erl(Pid, Frame) ->
+    gun:ws_send(Pid, Frame).
+

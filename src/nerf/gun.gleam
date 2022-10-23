@@ -5,6 +5,8 @@ import gleam/http.{Header}
 import gleam/erlang/charlist.{Charlist}
 import gleam/dynamic.{Dynamic}
 import gleam/option.{Option}
+import gleam/string_builder.{StringBuilder}
+import gleam/bit_builder.{BitBuilder}
 
 pub external type StreamReference
 
@@ -82,12 +84,14 @@ pub type Frame {
   Close
   Text(String)
   Binary(BitString)
+  TextBuilder(StringBuilder)
+  BinaryBuilder(BitBuilder)
 }
 
 external type OkAtom
 
 external fn ws_send_erl(ConnectionPid, Frame) -> OkAtom =
-  "gun" "ws_send"
+  "nerf_ffi" "ws_send_erl"
 
 pub fn ws_send(pid: ConnectionPid, frame: Frame) -> Nil {
   ws_send_erl(pid, frame)
