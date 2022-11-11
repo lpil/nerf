@@ -2,12 +2,12 @@
 # You typically do not need to edit this file
 
 packages = [
-  { name = "certifi", version = "2.9.0", build_tools = ["rebar3"], requirements = [], otp_app = "certifi", source = "hex", outer_checksum = "266DA46BDB06D6C6D35FDE799BCB28D36D985D424AD7C08B5BB48F5B5CDD4641" },
+  { name = "certifi", version = "2.10.0", build_tools = ["rebar3"], requirements = [], otp_app = "certifi", source = "hex", outer_checksum = "E87A9DD6E7FE9C5804887850D4CDBCD83DB4DA7A27F928174F11E4E06FB7902E" },
   { name = "cowlib", version = "2.7.3", build_tools = ["rebar3"], requirements = [], otp_app = "cowlib", source = "hex", outer_checksum = "1E1A3D176D52DAEBBECBBCDFD27C27726076567905C2A9D7398C54DA9D225761" },
-  { name = "gleam_erlang", version = "0.14.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_erlang", source = "hex", outer_checksum = "D785B002CE42C2C5196F1CEEC9D4CCB5528B3F4BD11D09FE082730F44FB31B75" },
-  { name = "gleam_http", version = "3.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_http", source = "hex", outer_checksum = "8E0A96A56CB5870252EACB4860B8BC2AF755F5E13F4AB99970C572C5BB315053" },
-  { name = "gleam_stdlib", version = "0.22.1", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "9C6C66EDAAFD097267089565488DEDFC111A0497DE9CB2C42248E26330CC48E9" },
-  { name = "gleeunit", version = "0.6.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "A006864621DB80C4FBB0746580703502FD81A4D38D23FCB20A8120984D353DF0" },
+  { name = "gleam_erlang", version = "0.17.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_erlang", source = "hex", outer_checksum = "A3BB3D4A6AFC2E34CAB1A4960F0CBBC4AA1A052D5023477D16B848D86E69948A" },
+  { name = "gleam_http", version = "3.1.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_http", source = "hex", outer_checksum = "B66B7A1539CCB577119E4DC80DD3484C1A652CB032967954498EEDBAE3355763" },
+  { name = "gleam_stdlib", version = "0.24.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "BD0E75F3153375218E9EC380930E3621036CADCF4246AA55B193BDABFD06D5CE" },
+  { name = "gleeunit", version = "0.7.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "94DE5571BF62C416123C25F2C0F76E2AAF121F3416D156BFB72A588D0D03B8C6" },
   { name = "gun", version = "1.3.3", build_tools = ["rebar3"], requirements = ["cowlib"], otp_app = "gun", source = "hex", outer_checksum = "3106CE167F9C9723F849E4FB54EA4A4D814E3996AE243A1C828B256E749041E0" },
 ]
 

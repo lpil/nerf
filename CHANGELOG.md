@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.1 - 2022-11-11
+
+- Updated for latest Gleam version.
+
 ## v0.3.0 - 2022-08-07
 
 - Added support for binary WebSocket frames
