@@ -3,7 +3,6 @@ import gleam/dynamic.{Dynamic}
 import gleam/result
 import gleam/string_builder.{StringBuilder}
 import gleam/bit_builder.{BitBuilder}
-import gleam/result
 import nerf/gun.{ConnectionPid, StreamReference}
 
 pub opaque type Connection {
