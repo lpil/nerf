@@ -11,11 +11,19 @@ pub external type StreamReference
 
 pub external type ConnectionPid
 
-pub fn open(host: String, port: Int) -> Result(ConnectionPid, Dynamic) {
-  open_erl(charlist.from_string(host), port)
+pub fn open(
+  host: String,
+  port: Int,
+  opts_map: Dynamic,
+) -> Result(ConnectionPid, Dynamic) {
+  open_erl(charlist.from_string(host), port, opts_map)
 }
 
-pub external fn open_erl(Charlist, Int) -> Result(ConnectionPid, Dynamic) =
+pub external fn open_erl(
+  Charlist,
+  Int,
+  Dynamic,
+) -> Result(ConnectionPid, Dynamic) =
   "gun" "open"
 
 pub external fn await_up(ConnectionPid) -> Result(Dynamic, Dynamic) =
