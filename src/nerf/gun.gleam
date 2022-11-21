@@ -19,11 +19,7 @@ pub fn open(
   open_erl(charlist.from_string(host), port, opts_map)
 }
 
-pub external fn open_erl(
-  Charlist,
-  Int,
-  Dynamic,
-) -> Result(ConnectionPid, Dynamic) =
+external fn open_erl(Charlist, Int, Dynamic) -> Result(ConnectionPid, Dynamic) =
   "gun" "open"
 
 pub external fn await_up(ConnectionPid) -> Result(Dynamic, Dynamic) =

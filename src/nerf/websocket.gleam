@@ -1,6 +1,5 @@
 import gleam/http.{Header}
 import gleam/dynamic.{Dynamic}
-import gleam/erlang/atom.{Atom}
 import gleam/result
 import gleam/string_builder.{StringBuilder}
 import gleam/bit_builder.{BitBuilder}
@@ -16,12 +15,21 @@ pub type Frame {
   Binary(BitString)
 }
 
+pub type ConnectionOptsTransport {
+  Tcp
+  Tls
+}
+
+pub type ConnectionOptsTransportOptsVerify {
+  VerifyNone
+}
+
 pub type ConnectionOptsTransportOpts {
-  Verify(Atom)
+  Verify(ConnectionOptsTransportOptsVerify)
 }
 
 pub type ConnectionOpts {
-  Transport(Atom)
+  Transport(ConnectionOptsTransport)
   TransportOpts(List(ConnectionOptsTransportOpts))
 }
 
@@ -87,7 +95,7 @@ pub external fn receive(from: Connection, within: Int) -> Result(Frame, Nil) =
 external fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic) =
   "nerf_ffi" "ws_await_upgrade"
 
-pub external fn map_from_list(list: List(a)) -> m =
+external fn map_from_list(list: List(a)) -> m =
   "maps" "from_list"
 
 // TODO: listen for close events
