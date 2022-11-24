@@ -4,6 +4,7 @@ import gleam/result
 import gleam/string_builder.{StringBuilder}
 import gleam/bit_builder.{BitBuilder}
 import nerf/gun.{ConnectionPid, StreamReference}
+import nerf/opts.{ConnectionOpts}
 
 pub opaque type Connection {
   Connection(ref: StreamReference, pid: ConnectionPid)
@@ -15,32 +16,14 @@ pub type Frame {
   Binary(BitString)
 }
 
-pub type ConnectionOptsTransport {
-  Tcp
-  Tls
-}
-
-pub type ConnectionOptsTransportOptsVerify {
-  VerifyNone
-}
-
-pub type ConnectionOptsTransportOpts {
-  Verify(ConnectionOptsTransportOptsVerify)
-}
-
-pub type ConnectionOpts {
-  Transport(ConnectionOptsTransport)
-  TransportOpts(List(ConnectionOptsTransportOpts))
-}
-
 pub fn connect(
   hostname: String,
   path: String,
   on port: Int,
   with headers: List(Header),
 ) -> Result(Connection, ConnectError) {
-  let opts = []
-  connect_with_options(hostname, path, port, headers, opts)
+  let default_opts = ConnectionOpts(transport: opts.Tcp)
+  connect_with_options(hostname, path, port, headers, default_opts)
 }
 
 pub fn connect_with_options(
@@ -48,12 +31,10 @@ pub fn connect_with_options(
   path: String,
   on port: Int,
   with headers: List(Header),
-  opts: List(ConnectionOpts),
+  opts: ConnectionOpts,
 ) {
-  let opts_map = map_from_list(opts)
-
   try pid =
-    gun.open(hostname, port, opts_map)
+    gun.open(hostname, port, opts)
     |> result.map_error(ConnectionFailed)
   try _ =
     gun.await_up(pid)
@@ -94,9 +75,6 @@ pub external fn receive(from: Connection, within: Int) -> Result(Frame, Nil) =
 
 external fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic) =
   "nerf_ffi" "ws_await_upgrade"
-
-external fn map_from_list(list: List(a)) -> m =
-  "maps" "from_list"
 
 // TODO: listen for close events
 pub fn close(conn: Connection) -> Nil {

@@ -6,6 +6,7 @@ import gleam/erlang/charlist.{Charlist}
 import gleam/dynamic.{Dynamic}
 import gleam/string_builder.{StringBuilder}
 import gleam/bit_builder.{BitBuilder}
+import nerf/opts.{ConnectionOpts}
 
 pub external type StreamReference
 
@@ -14,8 +15,13 @@ pub external type ConnectionPid
 pub fn open(
   host: String,
   port: Int,
-  opts_map: Dynamic,
+  opts: ConnectionOpts,
 ) -> Result(ConnectionPid, Dynamic) {
+  let opts_map =
+    opts
+    |> opts.to_gun_format
+    |> opts.map_from_list
+
   open_erl(charlist.from_string(host), port, opts_map)
 }
 
