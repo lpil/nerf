@@ -24,15 +24,15 @@ import gleam/erlang/atom
 
 pub fn main() {
   // Connect
-  assert Ok(conn) = websocket.connect("example.com", "/ws", 8080, [])
+  let assert Ok(conn) = websocket.connect("example.com", "/ws", 8080, [])
 
   // Send some messages
   websocket.send(conn, "Hello")
   websocket.send(conn, "World")
 
   // Receive some messages
-  assert Ok(Text("Hello")) = websocket.receive(conn, 500)
-  assert Ok(Text("World")) = websocket.receive(conn, 500)
+  let assert Ok(Text("Hello")) = websocket.receive(conn, 500)
+  let assert Ok(Text("World")) = websocket.receive(conn, 500)
 
   // Close the connection
   websocket.close(conn)
