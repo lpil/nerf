@@ -21,11 +21,11 @@ pub fn connect(
   on port: Int,
   with headers: List(Header),
 ) -> Result(Connection, ConnectError) {
-  use pid <- try(
+  use pid <- result.try(
     gun.open(hostname, port)
     |> result.map_error(ConnectionFailed),
   )
-  use _ <- try(
+  use _ <- result.try(
     gun.await_up(pid)
     |> result.map_error(ConnectionFailed),
   )
@@ -33,7 +33,7 @@ pub fn connect(
   // Upgrade to websockets
   let ref = gun.ws_upgrade(pid, path, headers)
   let conn = Connection(pid: pid, ref: ref)
-  use _ <- try(
+  use _ <- result.try(
     await_upgrade(conn, 1000)
     |> result.map_error(ConnectionFailed),
   )
