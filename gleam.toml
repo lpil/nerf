@@ -1,12 +1,12 @@
 name = "nerf"
-version = "0.3.1"
+version = "0.4.0"
 licences = ["Apache-2.0"]
 description = "Gleam bindings to gun, the HTTP/1.1, HTTP/2 and Websocket client"
 repository = { type = "github", user = "lpil", repo = "nerf" }
 links = [{ title = "Website", href = "https://gleam.run" }]
 
 [dependencies]
-gleam_stdlib = "~> 0.2"
+gleam_stdlib = "~> 0.24"
 gun = "> 1.3.0 and < 3.0.0"
 gleam_http = "~> 3.0"
 gleam_erlang = "~> 0.9"
