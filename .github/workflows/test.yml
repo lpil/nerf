@@ -15,14 +15,15 @@ jobs:
         image: docker.io/jmalloc/echo-server:latest
         ports:
           - "8080:8080"
+
     steps:
-      - uses: actions/checkout@v2.0.0
-      - uses: gleam-lang/setup-erlang@v1.1.2
+      - uses: actions/checkout@v3.5.1
+      - uses: erlef/setup-beam@v1.15.3
         with:
-          otp-version: "23.2"
-      - uses: gleam-lang/setup-gleam@v1.0.2
-        with:
-          gleam-version: "0.18.2"
+          otp-version: "25.2"
+          gleam-version: "0.29.0"
+          rebar3-version: "3"
+          # elixir-version: "1.14.2"
       - run: gleam format --check src test
       - run: gleam deps download
       - run: gleam test
