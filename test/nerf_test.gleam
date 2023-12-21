@@ -1,6 +1,6 @@
 import gleam/string
 import gleam/string_builder
-import gleam/bit_builder
+import gleam/bytes_builder
 import gleeunit
 import nerf/websocket.{Binary, Text}
 
@@ -34,11 +34,11 @@ pub fn echo_test() {
 
   websocket.send_binary_builder(
     conn,
-    bit_builder.from_bit_string(<<8, 7, 6, 5>>),
+    bytes_builder.from_bit_array(<<8, 7, 6, 5>>),
   )
   websocket.send_binary_builder(
     conn,
-    bit_builder.from_bit_string(<<4, 3, 2, 1>>),
+    bytes_builder.from_bit_array(<<4, 3, 2, 1>>),
   )
   let assert Ok(Binary(<<8, 7, 6, 5>>)) = websocket.receive(conn, 500)
   let assert Ok(Binary(<<4, 3, 2, 1>>)) = websocket.receive(conn, 500)
