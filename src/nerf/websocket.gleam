@@ -1,9 +1,9 @@
-import gleam/http.{Header}
-import gleam/dynamic.{Dynamic}
+import gleam/http.{type Header}
+import gleam/dynamic.{type Dynamic}
 import gleam/result
-import gleam/string_builder.{StringBuilder}
-import gleam/bit_builder.{BitBuilder}
-import nerf/gun.{ConnectionPid, StreamReference}
+import gleam/string_builder.{type StringBuilder}
+import gleam/bit_builder.{type BitBuilder}
+import nerf/gun.{type ConnectionPid, type StreamReference}
 
 pub opaque type Connection {
   Connection(ref: StreamReference, pid: ConnectionPid)
@@ -12,7 +12,7 @@ pub opaque type Connection {
 pub type Frame {
   Close
   Text(String)
-  Binary(BitString)
+  Binary(BitArray)
 }
 
 pub fn connect(
@@ -53,7 +53,7 @@ pub fn send_builder(to conn: Connection, this message: StringBuilder) -> Nil {
   gun.ws_send(conn.pid, gun.TextBuilder(message))
 }
 
-pub fn send_binary(to conn: Connection, this message: BitString) -> Nil {
+pub fn send_binary(to conn: Connection, this message: BitArray) -> Nil {
   gun.ws_send(conn.pid, gun.Binary(message))
 }
 
@@ -61,11 +61,11 @@ pub fn send_binary_builder(to conn: Connection, this message: BitBuilder) -> Nil
   gun.ws_send(conn.pid, gun.BinaryBuilder(message))
 }
 
-pub external fn receive(from: Connection, within: Int) -> Result(Frame, Nil) =
-  "nerf_ffi" "ws_receive"
+@external(erlang, "nerf_ffi", "ws_receive")
+pub fn receive(from: Connection, within: Int) -> Result(Frame, Nil)
 
-external fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic) =
-  "nerf_ffi" "ws_await_upgrade"
+@external(erlang, "nerf_ffi", "ws_await_upgrade")
+fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic)
 
 // TODO: listen for close events
 pub fn close(conn: Connection) -> Nil {
