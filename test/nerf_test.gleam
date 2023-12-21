@@ -2,7 +2,8 @@ import gleam/string
 import gleam/string_builder
 import gleam/bytes_builder
 import gleeunit
-import nerf/websocket.{Binary, Text}
+import nerf/gun.{Binary, Text}
+import nerf/websocket
 
 pub fn main() {
   gleeunit.main()

@@ -9,12 +9,6 @@ pub opaque type Connection {
   Connection(ref: StreamReference, pid: ConnectionPid)
 }
 
-pub type Frame {
-  Close
-  Text(String)
-  Binary(BitArray)
-}
-
 pub fn connect(
   hostname: String,
   path: String,
@@ -46,34 +40,44 @@ pub fn connect(
 }
 
 pub fn send(to conn: Connection, this message: String) -> Nil {
-  gun.ws_send(conn.pid, gun.Text(message))
+  ws_send(conn, gun.Text(message))
 }
 
 pub fn send_builder(to conn: Connection, this message: StringBuilder) -> Nil {
-  gun.ws_send(conn.pid, gun.TextBuilder(message))
+  ws_send(conn, gun.TextBuilder(message))
 }
 
 pub fn send_binary(to conn: Connection, this message: BitArray) -> Nil {
-  gun.ws_send(conn.pid, gun.Binary(message))
+  ws_send(conn, gun.Binary(message))
 }
 
 pub fn send_binary_builder(to conn: Connection, this message: BitBuilder) -> Nil {
-  gun.ws_send(conn.pid, gun.BinaryBuilder(message))
+  ws_send(conn, gun.BinaryBuilder(message))
 }
 
 @external(erlang, "nerf_ffi", "ws_receive")
-pub fn receive(from: Connection, within: Int) -> Result(Frame, Nil)
+pub fn receive(from: Connection, within: Int) -> Result(gun.Frame, Nil)
 
 @external(erlang, "nerf_ffi", "ws_await_upgrade")
 fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic)
 
 // TODO: listen for close events
 pub fn close(conn: Connection) -> Nil {
-  gun.ws_send(conn.pid, gun.Close)
+  ws_send(conn, gun.Close)
 }
 
 /// The URI of the websocket server to connect to
 pub type ConnectError {
   ConnectionRefused(status: Int, headers: List(Header))
   ConnectionFailed(reason: Dynamic)
+}
+
+type OkAtom
+
+@external(erlang, "nerf_ffi", "ws_send_erl")
+fn ws_send_erl(conn: Connection, frame: gun.Frame) -> OkAtom
+
+pub fn ws_send(conn: Connection, frame: gun.Frame) -> Nil {
+  ws_send_erl(conn, frame)
+  Nil
 }

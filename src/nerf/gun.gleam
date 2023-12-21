@@ -35,13 +35,3 @@ pub type Frame {
   TextBuilder(StringBuilder)
   BinaryBuilder(BitBuilder)
 }
-
-type OkAtom
-
-@external(erlang, "nerf_ffi", "ws_send_erl")
-fn ws_send_erl(conn: ConnectionPid, frame: Frame) -> OkAtom
-
-pub fn ws_send(pid: ConnectionPid, frame: Frame) -> Nil {
-  ws_send_erl(pid, frame)
-  Nil
-}
