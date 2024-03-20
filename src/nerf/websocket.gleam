@@ -2,7 +2,7 @@ import gleam/http.{type Header}
 import gleam/dynamic.{type Dynamic}
 import gleam/result
 import gleam/string_builder.{type StringBuilder}
-import gleam/bit_builder.{type BitBuilder}
+import gleam/bytes_builder.{type BytesBuilder}
 import nerf/gun.{type ConnectionPid, type StreamReference}
 
 pub opaque type Connection {
@@ -51,7 +51,7 @@ pub fn send_binary(to conn: Connection, this message: BitArray) -> Nil {
   ws_send(conn, gun.Binary(message))
 }
 
-pub fn send_binary_builder(to conn: Connection, this message: BitBuilder) -> Nil {
+pub fn send_binary_builder(to conn: Connection, this message: BytesBuilder) -> Nil {
   ws_send(conn, gun.BinaryBuilder(message))
 }
 
