@@ -34,10 +34,10 @@ ws_await_upgrade({connection, Ref, Pid}, Timeout)
         exit(timeout)
     end.
 
-ws_send_erl(Pid, {text_builder, Text}) ->
-    ws_send_erl(Pid, {text, Text});
-ws_send_erl(Pid, {binary_builder, Bin}) ->
-    ws_send_erl(Pid, {binary, Bin});
-ws_send_erl(Pid, Frame) ->
-    gun:ws_send(Pid, Frame).
+ws_send_erl({connection, Ref, Pid}, {text_builder, Text}) ->
+    ws_send_erl({connection, Ref, Pid}, {text, Text});
+ws_send_erl({connection, Ref, Pid}, {binary_builder, Bin}) ->
+    ws_send_erl({connection, Ref, Pid}, {binary, Bin});
+ws_send_erl({connection, Ref, Pid}, Frame) ->
+    gun:ws_send(Pid, Ref, Frame).
 

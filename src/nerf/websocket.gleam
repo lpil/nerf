@@ -1,18 +1,12 @@
-import gleam/http.{Header}
-import gleam/dynamic.{Dynamic}
+import gleam/http.{type Header}
+import gleam/dynamic.{type Dynamic}
 import gleam/result
-import gleam/string_builder.{StringBuilder}
-import gleam/bit_builder.{BitBuilder}
-import nerf/gun.{ConnectionPid, StreamReference}
+import gleam/string_builder.{type StringBuilder}
+import gleam/bytes_builder.{type BytesBuilder}
+import nerf/gun.{type ConnectionPid, type StreamReference}
 
 pub opaque type Connection {
   Connection(ref: StreamReference, pid: ConnectionPid)
-}
-
-pub type Frame {
-  Close
-  Text(String)
-  Binary(BitString)
 }
 
 pub fn connect(
@@ -46,34 +40,44 @@ pub fn connect(
 }
 
 pub fn send(to conn: Connection, this message: String) -> Nil {
-  gun.ws_send(conn.pid, gun.Text(message))
+  ws_send(conn, gun.Text(message))
 }
 
 pub fn send_builder(to conn: Connection, this message: StringBuilder) -> Nil {
-  gun.ws_send(conn.pid, gun.TextBuilder(message))
+  ws_send(conn, gun.TextBuilder(message))
 }
 
-pub fn send_binary(to conn: Connection, this message: BitString) -> Nil {
-  gun.ws_send(conn.pid, gun.Binary(message))
+pub fn send_binary(to conn: Connection, this message: BitArray) -> Nil {
+  ws_send(conn, gun.Binary(message))
 }
 
-pub fn send_binary_builder(to conn: Connection, this message: BitBuilder) -> Nil {
-  gun.ws_send(conn.pid, gun.BinaryBuilder(message))
+pub fn send_binary_builder(to conn: Connection, this message: BytesBuilder) -> Nil {
+  ws_send(conn, gun.BinaryBuilder(message))
 }
 
-pub external fn receive(from: Connection, within: Int) -> Result(Frame, Nil) =
-  "nerf_ffi" "ws_receive"
+@external(erlang, "nerf_ffi", "ws_receive")
+pub fn receive(from: Connection, within: Int) -> Result(gun.Frame, Nil)
 
-external fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic) =
-  "nerf_ffi" "ws_await_upgrade"
+@external(erlang, "nerf_ffi", "ws_await_upgrade")
+fn await_upgrade(from: Connection, within: Int) -> Result(Nil, Dynamic)
 
 // TODO: listen for close events
 pub fn close(conn: Connection) -> Nil {
-  gun.ws_send(conn.pid, gun.Close)
+  ws_send(conn, gun.Close)
 }
 
 /// The URI of the websocket server to connect to
 pub type ConnectError {
   ConnectionRefused(status: Int, headers: List(Header))
   ConnectionFailed(reason: Dynamic)
+}
+
+type OkAtom
+
+@external(erlang, "nerf_ffi", "ws_send_erl")
+fn ws_send_erl(conn: Connection, frame: gun.Frame) -> OkAtom
+
+pub fn ws_send(conn: Connection, frame: gun.Frame) -> Nil {
+  ws_send_erl(conn, frame)
+  Nil
 }
